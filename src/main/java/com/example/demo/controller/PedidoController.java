@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/pedidos")
 public class PedidoController {
 	@Autowired
@@ -33,24 +34,28 @@ public class PedidoController {
 				.orElseGet(() -> ResponseEntity.notFound().build());
 	}
 
+	//	@PatchMapping("/{id}")
+//	public ResponseEntity<?> atualizarStatus(@PathVariable UUID id, @RequestBody StatusPedido status) {
+//		Pedido pedido = PedidoService.atualizarStatus(id, status);
+//		return ResponseEntity.ok(new StatusUpdateResponse("Pedido atualizado com sucesso", pedido.getStatus()));
+//	}
+	@PatchMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> atualizarStatus(@PathVariable UUID id, @RequestBody Map<String, String> body) {
+		String statusString = body.get("status");
 
-@PatchMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-public ResponseEntity<?> atualizarStatus(@PathVariable UUID id, @RequestBody Map<String, String> body) {
-	String statusString = body.get("status");
-
-	if (statusString != null) {
-		StatusPedido status = StatusPedido.valueOf(statusString.toUpperCase());
-		Pedido pedido = PedidoService.atualizarStatus(id, status);
-		return ResponseEntity.ok(new StatusUpdateResponse("Pedido atualizado com sucesso", pedido.getStatus()));
-	} else {
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Status não fornecido ou inválido.");
+		if (statusString != null) {
+			StatusPedido status = StatusPedido.valueOf(statusString.toUpperCase());
+			Pedido pedido = PedidoService.atualizarStatus(id, status);
+			return ResponseEntity.ok(new StatusUpdateResponse("Pedido atualizado com sucesso", pedido.getStatus()));
+		} else {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Status não fornecido ou inválido.");
+		}
 	}
-}
-//
-@PostMapping("/testar-status")
-public ResponseEntity<String> testarStatus(@RequestBody StatusPedido status) {
-	return ResponseEntity.ok("Status recebido: " + status);
-}
+	//
+	@PostMapping("/testar-status")
+	public ResponseEntity<String> testarStatus(@RequestBody StatusPedido status) {
+		return ResponseEntity.ok("Status recebido: " + status);
+	}
 //
 
 
