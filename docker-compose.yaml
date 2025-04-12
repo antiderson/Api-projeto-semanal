@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  frontend:
+    build: ./front-pedidos  # Path to React Dockerfile
+    ports:
+       - "80:80"      # Production (Nginx)
+    environment:
+      - CHOKIDAR_USEPOLLING=true  # Fix file watching in Docker
+    depends_on:
+      - backend
+
+  backend:
+    build: 
+      context: ./back-pedidos
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/api-semanal
+      SPRING_DATASOURCE_USER: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    build:
+      context: ./banco-pedidos
+    image: postgres:15-alpine  # or use 'build: ./postgres' if using custom Dockerfile
+    environment:
+      POSTGRES_DB: api-semanal
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d mydb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
