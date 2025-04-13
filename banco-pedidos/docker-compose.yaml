@@ -1,6 +1,6 @@
 db:
     build:
-      context: ./banco-pedidos
+      context: .
     image: postgres:15-alpine  # or use 'build: ./postgres' if using custom Dockerfile
     environment:
       POSTGRES_DB: api-semanal
