@@ -18,23 +18,18 @@ jobs:
         uses: docker/setup-buildx-action@v2
 
       # Build and test frontend
-      - name: Build Frontend
+      - name: Build and Test Frontend
         working-directory: ./front-pedidos
         run: |
+          # Build including test stage
           docker compose build
-
-      - name: Test Frontend
-        working-directory: ./front-pedidos
-        run: |
-          docker compose run --rm frontend npm test
+          # Run tests using the builder stage where npm exists
+          docker compose run --rm builder npm test
 
       # Build and test backend
-      - name: Build Backend
+      - name: Build and Test Backend
         working-directory: ./back-pedidos
         run: |
           docker compose build
-
-      - name: Test Backend (Maven)
-        working-directory: ./back-pedidos
-        run: |
           docker compose run --rm backend mvn test
+
