@@ -1,6 +1,7 @@
-frontend:
-    build: .
+services:
+  frontend:
+    build: ./front-pedidos  # Path to React Dockerfile
     ports:
-       - "80:80"      
+       - "80:80"      # Production (Nginx)
     environment:
-      - CHOKIDAR_USEPOLLING=true  
+      - CHOKIDAR_USEPOLLING=true  # Fix file watching in Docker
