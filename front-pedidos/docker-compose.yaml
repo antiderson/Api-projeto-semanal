@@ -5,3 +5,8 @@ services:
        - "80:80"      
     environment:
       - CHOKIDAR_USEPOLLING=true 
+
+    frontend-builder:  # <-- Add this service
+      build:
+        context: .
+        target: builder  # Targets the builder stage in Dockerfile
