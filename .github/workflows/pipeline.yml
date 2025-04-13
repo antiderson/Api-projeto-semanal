@@ -1,0 +1,36 @@
+name: Build, Test, and Deploy to AWS EC2
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Build and test frontend
+      - name: Build Frontend
+        working-directory: ./front-pedidos
+        run: |
+          docker-compose build
+
+      - name: Test Frontend
+        working-directory: ./front-pedidos
+        run: |
+          docker-compose run --rm frontend npm test
+
+      # Build and test backend
+      - name: Build Backend
+        working-directory: ./back-pedidos
+        run: |
+          docker-compose build
+
+      - name: Test Backend (Maven)
+        working-directory: ./back-pedidos
+        run: |
+          docker-compose run --rm backend mvn test
