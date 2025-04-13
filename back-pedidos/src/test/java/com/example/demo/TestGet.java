@@ -15,7 +15,6 @@ import com.example.demo.controller.PedidoController;
 import com.example.demo.entity.Pedido;
 import com.example.demo.respository.PedidoRepository;
 
-@SpringBootTest
 class TestGet  {
 
     @MockBean
