@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -18,12 +19,11 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-@AutoConfigureMockMvc
+@WebMvcTest(PedidoController.class)
 public class TestGet {
 
     @MockBean
-    private PedidoService pedidoRepository;
+    private PedidoService pedidoService;
 
     @Autowired
     private PedidoController pedidoController;
@@ -40,7 +40,7 @@ public class TestGet {
 
     @BeforeEach
     void injectData(){
-        Mockito.when(pedidoRepository.listarTodosPedidos()).thenReturn(criarPedidoList());
+        Mockito.when(pedidoService.listarTodosPedidos()).thenReturn(criarPedidoList());
     }
 
     @Test
