@@ -25,7 +25,7 @@ jobs:
           
       # Build and test SpringBoot backend
       - name: Build and test SpringBoot backend
-        working-directory: ./backend
+        working-directory: ./back-pedidos
         run: mvn -B package --file pom.xml
         
       # Set up Node.js for React frontend
@@ -37,7 +37,7 @@ jobs:
           
       # Install and test React frontend
       - name: Install and test React frontend
-        working-directory: ./frontend
+        working-directory: ./front-pedidos
         run: |
           npm install
           npm run build
