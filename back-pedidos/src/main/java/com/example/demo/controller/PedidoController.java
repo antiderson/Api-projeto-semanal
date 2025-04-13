@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
-@CrossOrigin(origins = "http://localhost")
+@CrossOrigin(origins = "http://3.146.35.19")
 @RequestMapping("/pedidos")
 public class PedidoController {
 	@Autowired
