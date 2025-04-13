@@ -23,7 +23,8 @@ jobs:
         with:
           node-version: '18'
           cache: 'npm'
-          
+          cache-dependency-path: ./front-pedidos/package-lock.json
+
       # Install and test React frontend
       - name: Install and test React frontend
         working-directory: ./front-pedidos
