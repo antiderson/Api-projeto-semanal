@@ -1,8 +1,8 @@
 services:
   db:
     build:
-      context: ./banco-pedidos
-    image: postgres:15-alpine  # or use 'build: ./postgres' if using custom Dockerfile
+      context: .
+    image: postgres:15-alpine  
     environment:
       POSTGRES_DB: api-semanal
       POSTGRES_USER: postgres

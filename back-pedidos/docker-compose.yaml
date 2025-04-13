@@ -1,7 +1,7 @@
 services:
   backend:
     build: 
-      context: ./back-pedidos
+      context: .
     ports:
       - "8080:8080"
     environment:
