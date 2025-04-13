@@ -1,15 +1,17 @@
 package com.example.demo;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.util.Assert;
 
 import com.example.demo.controller.PedidoController;
 import com.example.demo.entity.Pedido;
@@ -28,7 +30,7 @@ class TestGet  {
 
         Pedido pedido = new Pedido();
         pedido.setCliente("nome");
-        pedido.setCliente("nome@email.com");
+        pedido.setEmail("nome@email.com");
 
         List<Pedido> pedidos = new ArrayList<>();
         pedidos.add(pedido);
@@ -45,7 +47,7 @@ class TestGet  {
     void TestGetAll()
     {
         var pedidos = pedidoController.listarPedidos();
-        Assert.notNull(pedidos, "nulo");
+        assertNotNull(pedidos, "nulo");
     }
 
 
