@@ -3,6 +3,8 @@ package com.example.demo;
 import com.example.demo.controller.PedidoController;
 import com.example.demo.entity.Pedido;
 import com.example.demo.respository.PedidoRepository;
+import com.example.demo.service.PedidoService;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -21,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TestGet {
 
     @MockBean
-    private PedidoRepository pedidoRepository;
+    private PedidoService pedidoRepository;
 
     @Autowired
     private PedidoController pedidoController;
@@ -38,7 +40,7 @@ public class TestGet {
 
     @BeforeEach
     void injectData(){
-        Mockito.when(pedidoRepository.findAll()).thenReturn(criarPedidoList());
+        Mockito.when(pedidoRepository.listarTodosPedidos()).thenReturn(criarPedidoList());
     }
 
     @Test
