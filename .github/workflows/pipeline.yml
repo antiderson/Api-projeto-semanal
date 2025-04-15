@@ -68,7 +68,7 @@ jobs:
       - name: Deploy back
         run: |
           ssh ec2-user@3.146.35.19 "
-            ssh key-ec2.pem -i ec2-user@10.0.30.202 '
+            ssh ec2-user@10.0.30.202 key-ec2.pem '
               cd ~/app-backend && 
               git pull origin main && 
               docker-compose down && 
