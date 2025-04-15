@@ -59,7 +59,7 @@ deploy:
 
     - name: Deploy via SSH
       run: |
-        ssh -i ${{ secrets.KEY }} ec2-user@3.146.35.19 "
+        ssh ec2-user@3.146.35.19 "
           cd ~/Api-projeto-semanal/front-pedidos && 
           git pull origin main && 
           docker-compose down && 
