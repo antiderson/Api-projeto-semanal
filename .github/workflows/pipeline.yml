@@ -57,7 +57,7 @@ jobs:
           ssh-keyscan github.com >> ~/.ssh/known_hosts
           ssh-keyscan 3.146.35.19 >> ~/.ssh/known_hosts
 
-      - name: Deploy via SSH
+      - name: Deploy front
         run: |
           ssh ec2-user@3.146.35.19 "
             cd ~/Api-projeto-semanal/front-pedidos && 
@@ -65,6 +65,7 @@ jobs:
             docker-compose down && 
             docker-compose up --build 
           "
+      - name: Deploy back
         run: |
           ssh ec2-user@3.146.35.19 "
             ssh key-ec2.pem -i ec2-user@10.0.30.202 '
