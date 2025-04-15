@@ -65,6 +65,7 @@ jobs:
             docker-compose down && 
             docker-compose up --build 
           "
+        run: |
           ssh ec2-user@3.146.35.19 "
             ssh key-ec2.pem -i ec2-user@10.0.30.202 '
               cd ~/app-backend && 
