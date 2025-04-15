@@ -10,7 +10,7 @@ import java.util.*;
 
 @RestController
 @CrossOrigin(origins = "http://3.146.35.19")
-@RequestMapping("/pedidos")
+@RequestMapping("api/pedidos")
 public class PedidoController {
 	@Autowired
 	private PedidoService PedidoService;
