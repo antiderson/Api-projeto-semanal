@@ -47,10 +47,7 @@ jobs:
 deploy:
   needs: build-and-test
   runs-on: ubuntu-latest
-  env:
-    SSH_USER: ${{ secrets.SSH_USER }}
-    PUBLIC_EC2_HOST: ${{ secrets.PUBLIC_EC2_HOST }}
-    PRIVATE_EC2_HOST: ${{ secrets.PRIVATE_EC2_HOST }}
+  
   steps:
     - name: Install SSH key for GitHub & EC2
       run: |
@@ -62,7 +59,7 @@ deploy:
 
     - name: Deploy via SSH
       run: |
-        ssh ec2-user@3.146.35.19 "
+        ssh -i ${{ secrets.KEY }} ec2-user@3.146.35.19 "
           cd ~/Api-projeto-semanal/front-pedidos && 
           git pull origin main && 
           docker-compose down && 
