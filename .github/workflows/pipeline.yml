@@ -63,7 +63,7 @@ jobs:
             cd ~/Api-projeto-semanal/front-pedidos && 
             git pull origin main && 
             docker-compose down && 
-            docker-compose up --build &&
+            docker-compose up --build -d > /dev/null 2>&1
           "
       - name: Deploy back
         run: |
@@ -72,6 +72,6 @@ jobs:
               cd ~/app-backend && 
               git pull origin main && 
               docker-compose down && 
-              docker-compose up --build &&
+              docker-compose up --build 
             '
           "
