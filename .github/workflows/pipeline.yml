@@ -55,21 +55,21 @@ deploy:
     - name: Install SSH key for GitHub & EC2
       run: |
         mkdir -p ~/.ssh
-        echo "${{ secrets.KEY }}" | base64 --decode > key.pem
-
-        chmod 600 key.pem
-      
+        echo "${{ secrets.KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan github.com >> ~/.ssh/known_hosts
+        ssh-keyscan 3.146.35.19 >> ~/.ssh/known_hosts
 
     - name: Deploy via SSH
       run: |
-        ssh key.pem ec2-user@3.146.35.19 "
+        ssh ec2-user@3.146.35.19 "
           cd ~/Api-projeto-semanal/front-pedidos && 
           git pull origin main && 
           docker-compose down && 
 	        docker-compose up --build 
         "
-        ssh key.pem ec2-user@3.146.35.19 "
-          ssh key.pem -o StrictHostKeyChecking=no ec2-user@10.0.30.202 
+        ssh ec2-user@3.146.35.19 "
+          ssh -o StrictHostKeyChecking=no ec2-user@10.0.30.202 '
             cd ~/app-backend && 
             git pull origin main && 
             docker-compose down && 
