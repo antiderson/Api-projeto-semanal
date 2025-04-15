@@ -63,13 +63,13 @@ deploy:
           cd ~/Api-projeto-semanal/front-pedidos && 
           git pull origin main && 
           docker-compose down && 
-	        docker-compose up --build 
+          docker-compose up --build 
         "
         ssh ec2-user@3.146.35.19 "
           ssh -o StrictHostKeyChecking=no ec2-user@10.0.30.202 '
             cd ~/app-backend && 
             git pull origin main && 
             docker-compose down && 
-	          docker-compose up --build
-          
+            docker-compose up --build
+          '
         "
