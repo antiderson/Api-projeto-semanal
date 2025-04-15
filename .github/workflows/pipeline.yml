@@ -72,7 +72,7 @@ jobs:
             chmod 600 /tmp/key-ec2.pem
             
             ssh -i /tmp/key-ec2.pem -o StrictHostKeyChecking=no ec2-user@10.0.30.202 '
-              cd ~/app-backend
+              cd ~/Api-projeto-semanal/back-pedidos
               git pull origin main
               docker-compose down
               docker-compose up --build -d
