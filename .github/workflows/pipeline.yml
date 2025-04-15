@@ -68,14 +68,10 @@ jobs:
       - name: Deploy back
         run: |
           ssh ec2-user@3.146.35.19 "
-            echo '${{ secrets.BACKEND_SSH_KEY }}' > /tmp/key-ec2.pem
-            chmod 600 /tmp/key-ec2.pem  # Restrict permissions
-            
-            ssh -i /tmp/key-ec2.pem -o StrictHostKeyChecking=no ec2-user@10.0.30.202 '
-              cd ~/app-backend
-              git pull origin main
-              docker-compose down
-              docker-compose up --build -d
+            ssh key-ec2.pem -i ec2-user@10.0.30.202 '
+              cd ~/app-backend && 
+              git pull origin main && 
+              docker-compose down && 
+              docker-compose up --build 
             '
-            
-            rm -f /tmp/key-ec2.pem
+          "
