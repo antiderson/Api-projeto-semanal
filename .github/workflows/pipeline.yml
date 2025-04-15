@@ -43,3 +43,36 @@ jobs:
         run: |
           mvn clean install
           mvn test
+
+deploy:
+  needs: build-and-test
+  runs-on: ubuntu-latest
+  env:
+    SSH_USER: ${{ secrets.SSH_USER }}
+    PUBLIC_EC2_HOST: ${{ secrets.PUBLIC_EC2_HOST }}
+    PRIVATE_EC2_HOST: ${{ secrets.PRIVATE_EC2_HOST }}
+  steps:
+    - name: Install SSH key for GitHub & EC2
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.KEY }}" | base64 --decode > key.pem
+
+        chmod 600 key.pem
+      
+
+    - name: Deploy via SSH
+      run: |
+        ssh key.pem ec2-user@3.146.35.19 "
+          cd ~/Api-projeto-semanal/front-pedidos && 
+          git pull origin main && 
+          docker-compose down && 
+	        docker-compose up --build 
+        "
+        ssh key.pem ec2-user@3.146.35.19 "
+          ssh key.pem -o StrictHostKeyChecking=no ec2-user@10.0.30.202 
+            cd ~/app-backend && 
+            git pull origin main && 
+            docker-compose down && 
+	          docker-compose up --build
+          
+        "
