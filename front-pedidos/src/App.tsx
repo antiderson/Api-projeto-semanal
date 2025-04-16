@@ -9,7 +9,7 @@ function App() {
 
   return (
     <div style={{ padding: '2rem' }}>
-      <h1>Sistema de Pedidos</h1>
+      <h1>Sistema de Pedidos Apresentação</h1>
       <PedidoForm onSuccess={toggleReload} />
       <PedidoList key={reload ? 'a' : 'b'} />
     </div>
