@@ -3,6 +3,7 @@ version: '3.8'
 services:
   frontend:
     build: ./front-pedidos  # Path to React Dockerfile
+    image: my-frontend-app:latest
     ports:
        - "80:80"      # Production (Nginx)
     environment:
@@ -13,6 +14,7 @@ services:
   backend:
     build: 
       context: ./back-pedidos
+    image: my-java-app:latest
     ports:
       - "8080:8080"
     environment:
@@ -26,7 +28,7 @@ services:
   db:
     build:
       context: ./banco-pedidos
-    image: postgres:15-alpine  # or use 'build: ./postgres' if using custom Dockerfile
+    image: my-postgres:latest
     environment:
       POSTGRES_DB: api-semanal
       POSTGRES_USER: postgres
