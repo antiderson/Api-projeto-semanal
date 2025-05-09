@@ -20,6 +20,10 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Garantir permissão de execução para mvnw (backend)
+        working-directory: back-pedidos
+        run: chmod +x ./mvnw
+
       - name: Executar testes do backend
         working-directory: back-pedidos
         run: ./mvnw test
