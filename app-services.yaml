@@ -10,7 +10,7 @@ spec:
     - protocol: TCP
       port: 8080
       targetPort: 8080
-  type: NodePort
+  type: LoadBalancer
 
 ---
 # Service for Frontend
@@ -25,7 +25,7 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 80
-  type: NodePort
+  type: LoadBalancer
 
 ---
 # Service for Postgres Database
