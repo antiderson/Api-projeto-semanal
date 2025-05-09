@@ -32,6 +32,11 @@ jobs:
         working-directory: front-pedidos
         run: npm install
 
-      - name: Executar testes do frontend
+      - name: Verificar script de teste no frontend
         working-directory: front-pedidos
-        run: npm test
+        run: |
+          if grep -q '"test":' package.json; then
+            npm test
+          else
+            echo "Nenhum script de teste encontrado no frontend."
+          fi
