@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: java-backend
-  namespace: stage
+  namespace: production 
 spec:
   replicas: 1
   selector:
@@ -38,7 +38,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend
-  namespace: stage
+  namespace: production 
 spec:
   replicas: 1
   selector:
@@ -63,7 +63,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: postgres-db
-  namespace: stage
+  namespace: production 
 spec:
   replicas: 1
   selector:
