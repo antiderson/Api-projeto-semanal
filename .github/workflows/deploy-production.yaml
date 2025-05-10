@@ -26,5 +26,5 @@ jobs:
 
       - name: Aplicar configurações no Kubernetes (Produção)
         run: |
-          kubectl apply -n production -f app-deployment.yaml
-          kubectl apply -n production -f app-services.yaml
+          kubectl apply -f production/app-deployment.yaml
+          kubectl apply -f production/app-services.yaml

@@ -26,5 +26,5 @@ jobs:
 
       - name: Aplicar configurações no Kubernetes (Stage)
         run: |
-          kubectl apply -n stage -f app-deployment.yaml
-          kubectl apply -n stage -f app-services.yaml
+          kubectl apply -f stage/app-deployment.yaml
+          kubectl apply -f stage/app-services.yaml
