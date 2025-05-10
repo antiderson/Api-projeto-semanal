@@ -36,6 +36,7 @@ jobs:
         working-directory: front-pedidos
         run: |
           if grep -q '"test":' package.json; then
+            echo "Testes frontend encontrados. Executando..."
             npm test
           else
             echo "Nenhum script de teste encontrado no frontend."
