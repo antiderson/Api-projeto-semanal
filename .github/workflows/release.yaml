@@ -1,0 +1,74 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'release/*'  # Gatilho para tags no formato release/*
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Configurar Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Garantir permissão de execução para mvnw (backend)
+        working-directory: back-pedidos
+        run: chmod +x ./mvnw
+
+      - name: Executar testes do backend
+        working-directory: back-pedidos
+        run: ./mvnw test
+
+      - name: Instalar dependências do frontend
+        working-directory: front-pedidos
+        run: npm install
+
+      - name: Verificar script de teste no frontend
+        working-directory: front-pedidos
+        run: |
+          if grep -q '"test":' package.json; then
+            echo "Testes frontend encontrados. Executando..."
+            npm test
+          else
+            echo "Nenhum script de teste encontrado no frontend."
+          fi
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build-and-test 
+    if: success()  # Só executa se o job anterior tiver sucesso
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Configurar kubectl
+        run: |
+          # Instalar kubectl
+          curl -LO https://dl.k8s.io/release/v1.24.0/bin/linux/amd64/kubectl
+          chmod +x ./kubectl
+          mv ./kubectl /usr/local/bin/kubectl
+
+      - name: Configurar GKE (Google Kubernetes Engine)
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GKE_CREDENTIALS }}  
+        run: |
+          gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
+          gcloud container clusters get-credentials your-cluster-name --zone your-zone --project your-project-id
+
+      - name: Deploy no GKE
+        run: |
+          kubectl apply -f k8s/prod/deployment.yaml
+          kubectl apply -f k8s/prod/service.yaml
+
+      # - name: Enviar notificação
+      #   run: |
+      #     curl -X POST -H 'Content-type: application/json' --data '{"text":"Release foi implantada no ambiente de produção!"}' $SLACK_WEBHOOK_URL
