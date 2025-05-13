@@ -12,6 +12,7 @@ function App() {
       <h1>Sistema de Pedidos Apresentação</h1>
       <PedidoForm onSuccess={toggleReload} />
       <PedidoList key={reload ? 'a' : 'b'} />
+      <span>teste novo </span>
     </div>
   );
 }
