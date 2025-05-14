@@ -1,8 +1,8 @@
-# Service for Java Backend
 apiVersion: v1
 kind: Service
 metadata:
   name: java-backend-service
+  namespace: production
 spec:
   selector:
     app: java-backend
@@ -11,13 +11,12 @@ spec:
       port: 8080
       targetPort: 8080
   type: LoadBalancer
-
 ---
-# Service for Frontend
 apiVersion: v1
 kind: Service
 metadata:
   name: frontend-service
+  namespace: production
 spec:
   selector:
     app: frontend
@@ -26,13 +25,12 @@ spec:
       port: 80
       targetPort: 80
   type: LoadBalancer
-
 ---
-# Service for Postgres Database
 apiVersion: v1
 kind: Service
 metadata:
-  name: postgres-db
+  name: postgres-service
+  namespace: production
 spec:
   selector:
     app: postgres-db
