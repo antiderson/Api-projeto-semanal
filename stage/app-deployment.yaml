@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: java-backend
-        image: docker.io/rafaelcht/back-pedidos:latest
+        image: docker.io/rafaelcht/kubernetes:back
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
@@ -51,7 +51,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: docker.io/rafaelcht/front-pedidos:latest
+        image: docker.io/rafaelcht/kubernetes:front
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80
@@ -76,7 +76,7 @@ spec:
     spec:
       containers:
       - name: postgres-db
-        image: docker.io/rafaelcht/db-pedidos:latest
+        image: docker.io/rafaelcht/kubernetes:db
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 5432
