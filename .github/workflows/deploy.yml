@@ -22,11 +22,22 @@ jobs:
         with:
           credentials_json: ${{ secrets.GCP_CREDENTIALS }}
 
-      - name: Get GKE credentials
+      # Obter credenciais do cluster de produção (branch main)
+      - name: Get credentials for Production cluster
+        if: github.ref == 'refs/heads/main'
         uses: google-github-actions/get-gke-credentials@v2
         with:
-          cluster_name: ${{ secrets.GKE_CLUSTER_NAME }}
-          location: ${{ secrets.GKE_CLUSTER_LOCATION }}
+          cluster_name: ${{ secrets.GKE_PROD_CLUSTER_NAME }}
+          location: ${{ secrets.GKE_PROD_CLUSTER_LOCATION }}
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+      # Obter credenciais do cluster de staging (branch dev)
+      - name: Get credentials for Staging cluster
+        if: github.ref == 'refs/heads/dev'
+        uses: google-github-actions/get-gke-credentials@v2
+        with:
+          cluster_name: ${{ secrets.GKE_STAGE_CLUSTER_NAME }}
+          location: ${{ secrets.GKE_STAGE_CLUSTER_LOCATION }}
           project_id: ${{ secrets.GCP_PROJECT_ID }}
 
       - name: Log in to Docker Hub
