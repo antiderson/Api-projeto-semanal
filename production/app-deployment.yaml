@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: java-backend
-        image: rafaelcht/kubernetes:back
+        image: rafaelcht/kubernetes:back-PLACEHOLDER
         ports:
         - containerPort: 8080
         env:
@@ -58,7 +58,7 @@ spec:
           effect: "NoSchedule"
       containers:
       - name: frontend
-        image: rafaelcht/kubernetes:front
+        image: rafaelcht/kubernetes:front-PLACEHOLDER
         ports:
         - containerPort: 80
         resources:
