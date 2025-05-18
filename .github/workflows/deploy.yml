@@ -1,0 +1,80 @@
+name: Deploy to GKE
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      IMAGE_TAG: ${{ github.sha }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+
+      # Obter credenciais do cluster de produção (branch main)
+      - name: Get credentials for Production cluster
+        if: github.ref == 'refs/heads/main'
+        uses: google-github-actions/get-gke-credentials@v2
+        with:
+          cluster_name: ${{ secrets.GKE_PROD_CLUSTER_NAME }}
+          location: ${{ secrets.GKE_PROD_CLUSTER_LOCATION }}
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+      # Obter credenciais do cluster de staging (branch dev)
+      - name: Get credentials for Staging cluster
+        if: github.ref == 'refs/heads/dev'
+        uses: google-github-actions/get-gke-credentials@v2
+        with:
+          cluster_name: ${{ secrets.GKE_STAGE_CLUSTER_NAME }}
+          location: ${{ secrets.GKE_STAGE_CLUSTER_LOCATION }}
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and Push Backend Image
+        run: |
+          docker build -t rafaelcht/kubernetes:back-${IMAGE_TAG} ./back-pedidos
+          docker push rafaelcht/kubernetes:back-${IMAGE_TAG}
+
+      - name: Build and Push Frontend Image
+        run: |
+          docker build -t rafaelcht/kubernetes:front-${IMAGE_TAG} ./front-pedidos
+          docker push rafaelcht/kubernetes:front-${IMAGE_TAG}
+
+      - name: Update image tags in Kubernetes manifests
+        run: |
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            TARGET_DIR="k8s/production"
+          else
+            TARGET_DIR="k8s/stage"
+          fi
+
+          echo "Atualizando imagens nos manifests de $TARGET_DIR"
+          sed -i "s|rafaelcht/kubernetes:back.*|rafaelcht/kubernetes:back-${IMAGE_TAG}|g" $TARGET_DIR/app-deployment.yaml
+          sed -i "s|rafaelcht/kubernetes:front.*|rafaelcht/kubernetes:front-${IMAGE_TAG}|g" $TARGET_DIR/app-deployment.yaml
+
+      - name: Deploy to Kubernetes
+        run: |
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            echo "Deploying to production namespace"
+            kubectl apply -f k8s/production/ --namespace=production
+          elif [ "${{ github.ref }}" = "refs/heads/dev" ]; then
+            echo "Deploying to staging namespace"
+            kubectl apply -f k8s/stage/ --namespace=stage
+          else
+            echo "No deployment for this branch"

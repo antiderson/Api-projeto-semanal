@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: java-backend
-  namespace: production 
+  namespace: production
 spec:
   replicas: 1
   selector:
@@ -15,8 +15,7 @@ spec:
     spec:
       containers:
       - name: java-backend
-        image: docker.io/rafaelcht/back-pedidos:latest
-        imagePullPolicy: IfNotPresent
+        image: rafaelcht/kubernetes:back-PLACEHOLDER
         ports:
         - containerPort: 8080
         env:
@@ -30,15 +29,19 @@ spec:
             secretKeyRef:
               name: postgres-credentials
               key: postgres_password
-      imagePullSecrets:
-      - name: dockerhub-secret
-
+        # resources:
+        #   requests:
+        #     memory: "128Mi"
+        #     cpu: "100m"
+        #   limits:
+        #     memory: "256Mi"
+        #     cpu: "200m"
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend
-  namespace: production 
+  namespace: production
 spec:
   replicas: 1
   selector:
@@ -49,21 +52,28 @@ spec:
       labels:
         app: frontend
     spec:
+      tolerations:
+        - key: "cloud.google.com/gke-quick-remove"
+          operator: "Exists"
+          effect: "NoSchedule"
       containers:
       - name: frontend
-        image: docker.io/rafaelcht/front-pedidos:latest
-        imagePullPolicy: IfNotPresent
+        image: rafaelcht/kubernetes:front-PLACEHOLDER
         ports:
         - containerPort: 80
-      imagePullSecrets:
-      - name: dockerhub-secret
-
+        # resources:
+        #   requests:
+        #     cpu: "50m"
+        #     memory: "64Mi"
+        #   limits:
+        #     cpu: "400m"
+        #     memory: "512Mi"
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: postgres-db
-  namespace: production 
+  namespace: production
 spec:
   replicas: 1
   selector:
@@ -76,8 +86,7 @@ spec:
     spec:
       containers:
       - name: postgres-db
-        image: docker.io/rafaelcht/db-pedidos:latest
-        imagePullPolicy: IfNotPresent
+        image: rafaelcht/kubernetes:db
         ports:
         - containerPort: 5432
         env:
@@ -87,5 +96,10 @@ spec:
           value: "postgres"
         - name: POSTGRES_PASSWORD
           value: "postgres"
-      imagePullSecrets:
-      - name: dockerhub-secret
+        volumeMounts:
+        - name: postgres-storage
+          mountPath: /var/lib/postgresql/data
+      volumes:
+      - name: postgres-storage
+        persistentVolumeClaim:
+          claimName: postgres-pvc
