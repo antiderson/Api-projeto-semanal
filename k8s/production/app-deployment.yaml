@@ -86,7 +86,7 @@ spec:
     spec:
       containers:
       - name: postgres-db
-        image: rafaelcht/kubernetes:db
+        image: postgres:15
         ports:
         - containerPort: 5432
         env:
