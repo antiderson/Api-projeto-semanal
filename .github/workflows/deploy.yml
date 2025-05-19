@@ -78,3 +78,4 @@ jobs:
             kubectl apply -f k8s/stage/ --namespace=stage
           else
             echo "No deployment for this branch"
+          fi
