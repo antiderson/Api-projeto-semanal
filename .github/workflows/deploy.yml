@@ -78,3 +78,20 @@ jobs:
             kubectl apply -f k8s/stage/ --namespace=stage
           else
             echo "No deployment for this branch"
+          fi
+
+      # - name: Wait for backend rollout
+      #   run: |
+      #     if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+      #       kubectl rollout status deployment/java-backend -n production --timeout=120s
+      #     elif [ "${{ github.ref }}" = "refs/heads/dev" ]; then
+      #       kubectl rollout status deployment/java-backend -n stage --timeout=120s
+      #     fi
+
+      # - name: Wait for frontend rollout
+      #   run: |
+      #     if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+      #       kubectl rollout status deployment/frontend -n production --timeout=120s
+      #     elif [ "${{ github.ref }}" = "refs/heads/dev" ]; then
+      #       kubectl rollout status deployment/frontend -n stage --timeout=120s
+      #     fi
