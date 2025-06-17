@@ -1,0 +1,27 @@
+name: Infraestrutura Prod
+
+on:
+  workflow_dispatch:
+
+jobs:
+  terraform-prod:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      # Autenticar no Google Cloud com a mesma secret usada no deploy
+      - name: Autenticar no Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+
+      - name: Terraform Init & Apply Prod
+        working-directory: infra/prod
+        run: |
+          terraform init
+          terraform apply -auto-approve -var-file=terraform.tfvars

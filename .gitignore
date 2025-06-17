@@ -1,0 +1,3 @@
+infra/environments/**/*.tfstate
+infra/environments/**/*.tfstate.backup
+infra/environments/**/.terraform/
