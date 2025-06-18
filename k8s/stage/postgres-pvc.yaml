@@ -5,7 +5,7 @@ metadata:
   namespace: app-stage
 spec:
   accessModes:
-    -ReadWriteOnce
+    - ReadWriteOnce
   resources:
     request:
       storage: 1G1
