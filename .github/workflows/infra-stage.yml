@@ -1,7 +1,7 @@
 name: Infraestrutura Stage
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:  # Manual para segurança
 
 jobs:
   terraform-stage:
@@ -14,7 +14,6 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
-      # Autenticar no Google Cloud com a mesma secret usada no deploy
       - name: Autenticar no Google Cloud
         uses: google-github-actions/auth@v2
         with:
