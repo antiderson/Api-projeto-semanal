@@ -31,11 +31,11 @@ spec:
               key: postgres_password
         resources:
           requests:
-            memory: "128Mi"
-            cpu: "100m"
+            cpu: "50m"
+            memory: "64Mi"
           limits:
-            memory: "256Mi"
-            cpu: "200m"
+            cpu: "100m"
+            memory: "128Mi"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -66,8 +66,8 @@ spec:
             cpu: "50m"
             memory: "64Mi"
           limits:
-            cpu: "400m"
-            memory: "512Mi"
+            cpu: "100m"
+            memory: "128Mi"
 ---
 apiVersion: apps/v1
 kind: Deployment
