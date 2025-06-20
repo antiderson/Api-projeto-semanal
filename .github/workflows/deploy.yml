@@ -27,8 +27,10 @@ jobs:
         if: github.ref == 'refs/heads/main'
         uses: google-github-actions/get-gke-credentials@v2
         with:
+
           cluster_name: ${{ secrets.GKE_CLUSTER_NAME_PROD }}
           location: ${{ secrets.GKE_CLUSTER_ZONE }}
+
           project_id: ${{ secrets.GCP_PROJECT_ID }}
 
       # Obter credenciais do cluster de staging (branch dev)
@@ -36,8 +38,10 @@ jobs:
         if: github.ref == 'refs/heads/dev'
         uses: google-github-actions/get-gke-credentials@v2
         with:
+
           cluster_name: ${{ secrets.GKE_CLUSTER_NAME_STAGE }}
           location: ${{ secrets.GKE_CLUSTER_ZONE }}
+
           project_id: ${{ secrets.GCP_PROJECT_ID }}
 
       - name: Log in to Docker Hub
@@ -68,6 +72,7 @@ jobs:
           sed -i "s|rafaelcht/kubernetes:back.*|rafaelcht/kubernetes:back-${IMAGE_TAG}|g" $TARGET_DIR/app-deployment.yaml
           sed -i "s|rafaelcht/kubernetes:front.*|rafaelcht/kubernetes:front-${IMAGE_TAG}|g" $TARGET_DIR/app-deployment.yaml
 
+
       - name: Create namespace if not exists
         run: |
           if [ "${{ github.ref }}" = "refs/heads/main" ]; then
@@ -76,10 +81,12 @@ jobs:
             kubectl create namespace app-stage || true
           fi
 
+
       - name: Deploy to Kubernetes
         run: |
           if [ "${{ github.ref }}" = "refs/heads/main" ]; then
             echo "Deploying to production namespace"
+
             kubectl apply -f k8s/production/ --namespace=app-prod
           elif [ "${{ github.ref }}" = "refs/heads/dev" ]; then
             echo "Deploying to staging namespace"
@@ -103,3 +110,4 @@ jobs:
           elif [ "${{ github.ref }}" = "refs/heads/dev" ]; then
             kubectl rollout status deployment/frontend -n app-stage --timeout=120s
           fi
+
