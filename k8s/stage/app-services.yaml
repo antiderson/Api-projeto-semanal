@@ -3,7 +3,11 @@ apiVersion: v1
 kind: Service
 metadata:
   name: java-backend-service
-  namespace: stage
+# <<<<<<< dev
+  namespace: app-stage
+# =======
+#   namespace: stage
+# >>>>>>> main
 spec:
   selector:
     app: java-backend
@@ -19,7 +23,11 @@ apiVersion: v1
 kind: Service
 metadata:
   name: frontend-service
-  namespace: stage
+# <<<<<<< dev
+  namespace: app-stage
+# =======
+#   namespace: stage
+# >>>>>>> main
 spec:
   selector:
     app: frontend
@@ -35,7 +43,11 @@ apiVersion: v1
 kind: Service
 metadata:
   name: postgres-db
-  namespace: stage
+# <<<<<<< dev
+  namespace: app-stage
+# =======
+#   namespace: stage
+# >>>>>>> main
 spec:
   selector:
     app: postgres-db

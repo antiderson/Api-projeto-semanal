@@ -2,7 +2,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: java-backend
-  namespace: production
+# <<<<<<< dev
+  namespace: app-prod
+# =======
+#   namespace: production
+# >>>>>>> main
 spec:
   replicas: 1
   selector:
@@ -29,19 +33,33 @@ spec:
             secretKeyRef:
               name: postgres-credentials
               key: postgres_password
-        # resources:
-        #   requests:
-        #     memory: "128Mi"
-        #     cpu: "100m"
-        #   limits:
-        #     memory: "256Mi"
-        #     cpu: "200m"
+# <<<<<<< dev
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+# =======
+#         # resources:
+#         #   requests:
+#         #     memory: "128Mi"
+#         #     cpu: "100m"
+#         #   limits:
+#         #     memory: "256Mi"
+#         #     cpu: "200m"
+# >>>>>>> main
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend
-  namespace: production
+# <<<<<<< dev
+  namespace: app-prod
+# =======
+#   namespace: production
+# >>>>>>> main
 spec:
   replicas: 1
   selector:
@@ -61,19 +79,33 @@ spec:
         image: rafaelcht/kubernetes:front-PLACEHOLDER
         ports:
         - containerPort: 80
-        # resources:
-        #   requests:
-        #     cpu: "50m"
-        #     memory: "64Mi"
-        #   limits:
-        #     cpu: "400m"
-        #     memory: "512Mi"
+# <<<<<<< dev
+        resources:
+          requests:
+            cpu: "50m"
+            memory: "64Mi"
+          limits:
+            cpu: "400m"
+            memory: "512Mi"
+# =======
+#         # resources:
+#         #   requests:
+#         #     cpu: "50m"
+#         #     memory: "64Mi"
+#         #   limits:
+#         #     cpu: "400m"
+#         #     memory: "512Mi"
+# >>>>>>> main
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: postgres-db
-  namespace: production
+# <<<<<<< dev
+  namespace: app-prod
+# =======
+#   namespace: production
+# >>>>>>> main
 spec:
   replicas: 1
   selector:
@@ -86,7 +118,11 @@ spec:
     spec:
       containers:
       - name: postgres-db
-        image: rafaelcht/kubernetes:db
+# <<<<<<< dev
+        image: postgres:15
+# =======
+#         image: rafaelcht/kubernetes:db
+# >>>>>>> main
         ports:
         - containerPort: 5432
         env:
