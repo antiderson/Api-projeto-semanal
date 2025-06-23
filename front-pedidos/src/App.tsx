@@ -1,24 +1,3 @@
-// import PedidoForm from './components/PedidoForm';
-// import PedidoList from './components/PedidoList';
-// import { useState } from 'react';
-
-// function App() {
-//   const [reload, setReload] = useState(false);
-
-//   const toggleReload = () => setReload(!reload);
-
-//   return (
-//     <div style={{ padding: '2rem' }}>
-//       <h1>Sistema de Pedidos Apresentação  - stage</h1>
-//       <PedidoForm onSuccess={toggleReload} />
-//       <PedidoList key={reload ? 'a' : 'b'} />
-//     </div>
-//   );
-// }
-
-// export default App;
-
-
 import { useState } from 'react';
 import PessoaForm from './components/PessoaForm';
 import PessoaList from './components/PessoaList';
@@ -34,18 +13,19 @@ function App() {
   };
 
   return (
-
     <div>
       <h1>CRUD de Pessoas</h1>
       <PessoaForm pessoaEditada={pessoaEditada} onSave={handleReload} />
       <PessoaList onEdit={setPessoaEditada} reloadTrigger={reload} />
 
-<!--     <div style={{ padding: '2rem' }}>
-      <h1>Sistema de Pedidos Apresentação com alterações</h1>
-      <PedidoForm onSuccess={toggleReload} />
-      <PedidoList key={reload ? 'a' : 'b'} />
-      <span>teste novo </span> -->
-
+      {/*
+      <div style={{ padding: '2rem' }}>
+        <h1>Sistema de Pedidos Apresentação com alterações</h1>
+        <PedidoForm onSuccess={toggleReload} />
+        <PedidoList key={reload ? 'a' : 'b'} />
+        <span>teste novo </span>
+      </div>
+      */}
     </div>
   );
 }
