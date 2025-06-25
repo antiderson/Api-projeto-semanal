@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { Pessoa } from '../types/Pessoa';
+import api from '../api'; // usando o mesmo client axios
 
 interface PessoaListProps {
     onEdit: (pessoa: Pessoa) => void;
@@ -10,18 +10,27 @@ interface PessoaListProps {
 const PessoaList: React.FC<PessoaListProps> = ({ onEdit, reloadTrigger }) => {
     const [pessoas, setPessoas] = useState<Pessoa[]>([]);
 
-    const fetchPessoas = () => {
-        axios.get<Pessoa[]>('http://localhost:8080/pessoas')
-            .then((res) => setPessoas(res.data));
+    const fetchPessoas = async () => {
+        try {
+            const { data } = await api.get<Pessoa[]>('/pessoas');
+            setPessoas(data);
+        } catch (error) {
+            console.error('Erro ao buscar pessoas:', error);
+        }
     };
 
     useEffect(() => {
         fetchPessoas();
     }, [reloadTrigger]);
 
-    const handleDelete = (id: number | undefined) => {
+    const handleDelete = async (id: number | undefined) => {
         if (!id) return;
-        axios.delete(`http://localhost:8080/pessoas/${id}`).then(fetchPessoas);
+        try {
+            await api.delete(`/pessoas/${id}`);
+            fetchPessoas();
+        } catch (error) {
+            console.error('Erro ao deletar pessoa:', error);
+        }
     };
 
     return (
