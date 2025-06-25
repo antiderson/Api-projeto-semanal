@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { Pessoa } from '../types/Pessoa';
+import api from '../api';
 
 interface PessoaFormProps {
     pessoaEditada: Pessoa | null;
     onSave: () => void;
 }
 
-const PessoaForm: React.FC<PessoaFormProps> = ({ pessoaEditada, onSave }) => {
+export default function PessoaForm({ pessoaEditada, onSave }: PessoaFormProps) {
     const [pessoa, setPessoa] = useState<Pessoa>({
         nome: '',
         idade: 0,
@@ -30,18 +30,17 @@ const PessoaForm: React.FC<PessoaFormProps> = ({ pessoaEditada, onSave }) => {
         }));
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        const method = pessoa.id ? axios.put : axios.post;
-        const url = pessoa.id
-            ? `http://localhost:8080/pessoas/${pessoa.id}`
-            : 'http://localhost:8080/pessoas';
+        if (pessoa.id) {
+            await api.put(`/pessoas/${pessoa.id}`, pessoa);
+        } else {
+            await api.post('/pessoas', pessoa);
+        }
 
-        method(url, pessoa).then(() => {
-            onSave();
-            setPessoa({ nome: '', idade: 0, sexo: '' });
-        });
+        onSave();
+        setPessoa({ nome: '', idade: 0, sexo: '' });
     };
 
     return (
@@ -61,7 +60,12 @@ const PessoaForm: React.FC<PessoaFormProps> = ({ pessoaEditada, onSave }) => {
                 placeholder="Idade"
                 required
             />
-            <select name="sexo" value={pessoa.sexo} onChange={handleChange} required>
+            <select
+                name="sexo"
+                value={pessoa.sexo}
+                onChange={handleChange}
+                required
+            >
                 <option value="">Selecione o sexo</option>
                 <option value="Masculino">Masculino</option>
                 <option value="Feminino">Feminino</option>
@@ -69,6 +73,4 @@ const PessoaForm: React.FC<PessoaFormProps> = ({ pessoaEditada, onSave }) => {
             <button type="submit">Salvar</button>
         </form>
     );
-};
-
-export default PessoaForm;
+}
